@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cash Flow Lab</title>
+<meta name="description" content="Learn the Statement of Cash Flows (indirect method) by reading the cash story underneath accrual accounting.">
+<link rel="stylesheet" href="css/app.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@600&display=swap" rel="stylesheet">
+<script src="config.js"></script>
+</head>
+<body>
+<header class="top">
+  <div class="brand" id="brand">Cash Flow Lab</div>
+  <nav aria-label="Main"><button data-view="home" class="on">Learn</button><button data-view="practice">Practice</button><button data-view="build">Build</button><button data-view="progress">Progress</button><button data-view="reference">Reference</button></nav>
+  <button class="refbtn" id="refDrawerBtn" aria-controls="refDrawer" aria-expanded="false" title="Open the reference without leaving this problem">Ref</button>
+</header>
+<main id="view" class="wrap"></main>
+<aside id="refDrawer" class="drawer" aria-label="Reference drawer"><div class="drawer-h"><b>Reference</b><button class="link" id="refDrawerClose">Close</button></div><div id="refDrawerBody"></div></aside>
+<noscript>Cash Flow Lab needs JavaScript.</noscript>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

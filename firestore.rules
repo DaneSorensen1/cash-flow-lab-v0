@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function isTeacher() { return signedIn() && exists(/databases/$(database)/documents/cfl_teachers/$(request.auth.uid)); }
+    function own(id) { return signedIn() && request.auth.uid == id; }
+
+    // Cash Flow Lab (cfl_ prefix keeps these separate from Journal Entry Arena collections in a shared project)
+    match /cfl_players/{uid} { allow read: if isTeacher() || own(uid); allow create, update: if own(uid); allow delete: if false; }
+    match /cfl_stats/{uid}   { allow read: if isTeacher() || own(uid); allow create, update: if own(uid); allow delete: if false; }
+    match /cfl_attempts/{id} { allow create: if signedIn() && request.resource.data.uid == request.auth.uid; allow read: if isTeacher(); allow update, delete: if false; }
+    match /cfl_public_stats/{uid} { allow read: if signedIn(); allow create, update: if own(uid); allow delete: if false; }
+    match /cfl_teachers/{uid} { allow read: if own(uid); allow write: if false; }
+
+    // Journal Entry Arena (keep if the two apps share one Firebase project)
+    match /players/{uid}  { allow read: if signedIn(); allow create: if signedIn() && request.auth.uid == request.resource.id; allow update: if signedIn() && request.auth.uid == resource.id; allow delete: if false; }
+    match /stats/{uid}    { allow read: if signedIn(); allow create: if signedIn() && request.auth.uid == request.resource.id; allow update: if signedIn() && request.auth.uid == resource.id; allow delete: if false; }
+    match /attempts/{id}  { allow create: if signedIn() && request.resource.data.uid == request.auth.uid; allow read: if signedIn() && exists(/databases/$(database)/documents/teachers/$(request.auth.uid)); allow update, delete: if false; }
+    match /teachers/{uid} { allow read: if own(uid); allow write: if false; }
+  }
+}
